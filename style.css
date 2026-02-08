@@ -1,0 +1,418 @@
+:root {
+    --red-poke: #EE1515;
+    --white-poke: #F0F0F0;
+    --black-poke: #222222;
+    --card-bg: #ffffff;
+    --primary: #ffcb05; /* Amarillo Pikachu */
+    --secondary: #3b4cca; /* Azul Pokemon */
+    --danger: #ff0000;
+    --success: #4caf50;
+    --text-dark: #333;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 20px;
+    color: var(--text-dark);
+    min-height: 100vh; /* Asegura que cubra toda la altura */
+    
+    /* --- FONDO DE POKÉBOLA --- */
+    background: linear-gradient(
+        to bottom,
+        var(--red-poke) 0%,
+        var(--red-poke) 48%,
+        var(--black-poke) 48%,
+        var(--black-poke) 52%,
+        var(--white-poke) 52%,
+        var(--white-poke) 100%
+    );
+    position: relative; /* Necesario para el botón central */
+}
+
+/* --- BOTÓN CENTRAL DE LA POKÉBOLA (Decorativo) --- */
+body::after {
+    content: '';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    height: 150px;
+    background: white;
+    border: 15px solid var(--black-poke);
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 10px white, inset 0 0 0 15px #ddd; /* Efecto de botón presionado */
+    z-index: -1; /* Se queda detrás de las tarjetas */
+}
+
+h1, h2, h3 {
+    font-family: 'Press Start 2P', cursive;
+    text-align: center;
+    color: white;
+    text-shadow: 3px 3px 0px #000; /* Sombra más fuerte para leerse sobre rojo */
+    letter-spacing: 2px;
+}
+
+.jackpot { 
+    color: var(--primary); 
+    font-size: 1.2rem; 
+    margin-bottom: 40px; 
+    text-shadow: 2px 2px 0 #2b2b2b;
+}
+
+/* --- UTILIDADES --- */
+.hidden { display: none !important; }
+
+/* --- PANTALLA DE CONFIGURACIÓN --- */
+.setup-screen {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.setup-card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    border: 5px solid var(--secondary);
+    text-align: center;
+    width: 320px;
+    box-shadow: 0 10px 0 rgba(0,0,0,0.2); /* Sombra sólida estilo cartoon */
+}
+
+.setup-card h2 { color: #333; text-shadow: none; font-size: 1rem; margin-bottom: 20px; }
+
+.input-group { margin-bottom: 15px; text-align: left; }
+.input-group label { display: block; font-weight: bold; font-size: 0.8rem; margin-bottom: 5px; font-family: 'Press Start 2P'; font-size: 0.6rem; color: #555;}
+.input-group input {
+    width: 100%; padding: 10px; 
+    border: 2px solid #ccc; 
+    border-radius: 8px; 
+    box-sizing: border-box;
+    font-family: 'Press Start 2P'; font-size: 0.7rem;
+}
+
+.start-btn {
+    width: 100%; padding: 15px; background: var(--success); color: white;
+    border: none; border-radius: 10px; font-family: 'Press Start 2P', cursive;
+    cursor: pointer; margin-top: 15px;
+    box-shadow: 0 5px 0 #2e7d32; /* Botón 3D */
+    transition: transform 0.1s;
+}
+.start-btn:active { transform: translateY(5px); box-shadow: none; }
+
+/* --- TARJETAS DE JUEGO --- */
+.game-board {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+}
+
+.player-card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    width: 290px;
+    padding: 20px;
+    /* Borde grueso estilo anime */
+    border: 4px solid var(--black-poke); 
+    box-shadow: 10px 10px 0 rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Decoración roja arriba de la tarjeta para que parezca una Pokedex */
+.player-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 10px; background: var(--danger);
+}
+
+.player-card:hover { transform: translateY(-5px); }
+
+.player-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px dashed #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
+.player-header h3 {
+    color: var(--text-dark); text-shadow: none; font-size: 0.9rem; margin: 0;
+}
+
+.money-badge {
+    background: var(--primary); color: #333; padding: 5px 10px;
+    border-radius: 5px; font-weight: bold; border: 2px solid #333;
+    font-family: 'Press Start 2P'; font-size: 0.6rem;
+}
+
+/* --- CARRUSEL --- */
+.carousel-container p { margin: 0 0 5px 0; font-size: 0.7rem; color: #666; font-family: 'Press Start 2P'; }
+
+.carousel {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f0f0f0; border-radius: 10px; padding: 5px;
+    margin-bottom: 15px; border: 2px solid #ddd;
+}
+
+.arrow-btn {
+    background: var(--secondary); color: white; border: 2px solid #333;
+    width: 35px; height: 35px; border-radius: 50%; cursor: pointer;
+    font-weight: bold; font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 3px 0 #1a2a7a;
+}
+.arrow-btn:active { transform: translateY(3px); box-shadow: none; }
+
+.selected-view {
+    display: flex; flex-direction: column; align-items: center; width: 100px;
+}
+.selected-view img { width: 80px; height: 80px; object-fit: contain; }
+.poke-name { font-weight: bold; color: var(--text-dark); margin-top: 5px; font-size: 0.7rem; text-transform: uppercase; font-family: 'Press Start 2P'; }
+
+/* --- SLOT Y BARRA --- */
+.slot-machine {
+    background: var(--text-dark); padding: 10px; border-radius: 10px;
+    margin-bottom: 15px; border: 4px solid var(--primary);
+}
+.slot-window {
+    background: white; height: 90px; display: flex; align-items: center;
+    justify-content: center; border-radius: 5px; overflow: hidden;
+    border: 2px solid #000;
+}
+.reel img { width: 70px; height: 70px; }
+
+@keyframes spinAnim {
+    0% { transform: translateY(-100%); opacity: 0.5; }
+    100% { transform: translateY(100%); opacity: 1; }
+}
+.spinning .reel { animation: spinAnim 0.1s infinite linear; }
+
+.hp-bar-container {
+    width: 100%; height: 20px; background: #eee;
+    border-radius: 10px; border: 2px solid #333; overflow: hidden; margin-bottom: 15px;
+}
+.hp-bar-fill {
+    height: 100%; 
+    background: linear-gradient(90deg, #ffcc00, #4caf50); 
+    transition: width 0.4s ease-out;
+}
+
+.spin-btn {
+    width: 100%; padding: 15px; background: var(--danger);
+    color: white; border: 2px solid #333; border-radius: 8px;
+    font-family: 'Press Start 2P', cursive; font-size: 0.8rem;
+    cursor: pointer; box-shadow: 0 5px 0 #990000;
+    transition: all 0.1s;
+}
+.spin-btn:active { transform: translateY(5px); box-shadow: none; }
+.spin-btn:disabled { background: #ccc; border-color: #999; box-shadow: none; cursor: not-allowed; color: #777; }
+
+.message-log { margin-top: 10px; font-size: 0.65rem; min-height: 20px; font-weight: bold; text-align: center; font-family: 'Press Start 2P'; line-height: 1.5; }
+.win { color: var(--success); }
+.lose { color: var(--danger); }
+.super-win { color: var(--secondary); }
+
+/* =========================================
+   NUEVO: PANTALLA POKÉDEX (SIN EMOJIS)
+   ========================================= */
+.pokedex-screen {
+    background: #2b2b2b;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 20px 0;
+    box-shadow: 0 0 0 4px #444, 0 10px 10px rgba(0,0,0,0.5);
+    border: 2px solid #111;
+    overflow: hidden;
+    position: relative;
+    font-family: 'Press Start 2P', cursive;
+}
+
+/* Cabecera azul tech */
+.screen-header {
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(90deg, #2c3e50, #3b4cca);
+    padding: 8px 10px;
+    border-radius: 4px 4px 0 0;
+    border-bottom: 2px solid #000;
+    margin-bottom: 5px;
+}
+
+.led-light {
+    width: 10px; height: 10px; background: #00ff00;
+    border-radius: 50%; box-shadow: 0 0 8px #00ff00;
+    animation: blinkSensor 1s infinite alternate;
+}
+
+.screen-title {
+    font-size: 0.55rem; color: #fff; letter-spacing: 1px;
+}
+
+/* Icono de batería dibujado con CSS */
+.battery-icon {
+    width: 20px; height: 10px; border: 2px solid #fff; border-radius: 2px;
+    position: relative; padding: 1px;
+}
+.battery-icon::after {
+    content: ''; position: absolute; right: -4px; top: 2px;
+    width: 2px; height: 6px; background: #fff;
+}
+.battery-icon .level {
+    width: 70%; height: 100%; background: #00ff00;
+}
+
+/* Contenido estilo Pantalla Verde Gameboy */
+.screen-content {
+    background: #8bac0f; /* Color clásico Gameboy */
+    border: 2px solid #0f380f;
+    border-radius: 0 0 4px 4px;
+    padding: 10px;
+    position: relative;
+    overflow: hidden; /* Para la linea de scan */
+}
+
+/* Efecto de línea de escaneo (Scanline) */
+.scan-line {
+    position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+    background: rgba(15, 56, 15, 0.2);
+    box-shadow: 0 0 10px rgba(15, 56, 15, 0.4);
+    animation: scan 3s linear infinite;
+    pointer-events: none;
+}
+@keyframes scan { 0% { top: -10%; } 100% { top: 110%; } }
+
+.rules-list {
+    list-style: none; padding: 0; margin: 0;
+    font-size: 0.6rem; color: #0f380f;
+}
+
+.rules-list li {
+    display: flex; align-items: center;
+    margin-bottom: 8px;
+    background: rgba(15, 56, 15, 0.1); /* Fondo sutil por renglón */
+    padding: 5px;
+    border-radius: 4px;
+    border-bottom: 1px solid rgba(15, 56, 15, 0.2);
+}
+
+.rules-list li:last-child { margin-bottom: 0; border-bottom: none; }
+
+/* Configuración de los Iconos SVG */
+.icon-box {
+    width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    margin-right: 10px;
+    background: #0f380f; /* Fondo oscuro para que resalte el icono */
+    border-radius: 4px;
+    padding: 2px;
+}
+.icon-box svg { width: 100%; height: 100%; }
+
+/* Colores específicos para los iconos dentro del SVG */
+.cost-icon svg { fill: #ffcc00; }
+.match-icon svg { fill: #ff3333; }
+.potion-icon svg { fill: #33ccff; }
+.trap-icon svg { fill: #ff5555; }
+
+.rule-text {
+    display: flex; justify-content: space-between; width: 100%; align-items: center;
+}
+
+.val {
+    background: #0f380f; color: #9bbc0f;
+    padding: 3px 6px; border-radius: 3px; font-size: 0.55rem;
+    font-weight: bold;
+}
+
+/* Colores de las etiquetas de valor */
+.win-text { color: #ffff00; }
+.bonus-text { color: #00ffea; }
+.trap-text { color: #ff5555; }
+
+@keyframes blinkSensor { 
+    0%, 100% { opacity: 1; } 
+    50% { opacity: 0.3; } 
+}
+/* --- PANTALLA DE VICTORIA --- */
+.victory-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+.victory-content h1 {
+    font-family: 'Press Start 2P', cursive;
+    color: #ffcc00;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-shadow: 4px 4px #ff0000;
+}
+
+.victory-content h2 {
+    font-family: 'Press Start 2P', cursive;
+    color: #fff;
+    font-size: 3rem;
+    margin: 20px 0;
+    text-transform: uppercase;
+}
+
+.pokemon-party {
+    margin: 40px 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.pokemon-party img {
+    width: 100px;
+    height: 100px;
+    image-rendering: pixelated;
+}
+
+/* Animación de baile/salto */
+.dance {
+    animation: bounce 0.6s infinite alternate;
+}
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-30px); }
+}
+
+.restart-btn {
+    background: #ff0000;
+    color: white;
+    font-family: 'Press Start 2P', cursive;
+    border: 4px solid white;
+    padding: 20px 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-top: 20px;
+}
+.restart-btn:hover {
+    background: #cc0000;
+    transform: scale(1.1);
+}
+
+.hidden {
+    display: none !important;
+}
